@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Gameobject moves on the spline by maintaing nearest position to player.contains addition code for lerp 
 public class MoveAlongSpline : MonoBehaviour
 {
     public Spline spline;
@@ -10,6 +11,7 @@ public class MoveAlongSpline : MonoBehaviour
     public float Speed = 1.0f;
     private Vector3 movDir;
 
+    //for lerp
     public int FrameCount = 1200;
     int elapsedFrames = 0;
 
@@ -28,7 +30,7 @@ public class MoveAlongSpline : MonoBehaviour
         //mov direction is direction from one point ot next
 
         // firstsecondDir = spline.SplineSection(this.thisTransform.position, spline.S).
-       // doLerp();
+       // doLerp();//Disabled
 
     }
 
@@ -36,7 +38,7 @@ public class MoveAlongSpline : MonoBehaviour
     {
         if (spline.SplinePoints.Length > 1)
         {
-            Vector3 startVec = spline.SplinePoints[0];
+            Vector3 startVec = spline.SplinePoints[0];//HARDCODE
             Vector3 desVec = spline.SplinePoints[1];
            // transform.position = Vector3.Lerp(startVec, desVec, Speed * Time.deltaTime);
 

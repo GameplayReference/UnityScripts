@@ -6,17 +6,17 @@ using UnityEngine;
 public class Spline : MonoBehaviour
 {
  
- public Vector3[] SplinePoints;
-    public int SplineCount;
+ public Vector3[] SplinePoints; //array of points, can be gameobject positions in editor(need to be child object of the gameobject this script is attached to.)
+    public int SplineCount; // no of points in the spline
 
-    public bool showSpline;
+    public bool showSpline;//bool for toggling visablity--NOT USED YET
 
     private void Start()
     {
         SplineCount = transform.childCount; //no of spline node equal number of sub objects;
         SplinePoints = new Vector3[SplineCount]; //make array of splines of spline count number;
 
-        for (int i = 0; i < SplineCount; i++)
+        for (int i = 0; i < SplineCount; i++)//fill array with postion of all child objects
         {
             SplinePoints[i] = transform.GetChild(i).position;
         }
@@ -37,7 +37,7 @@ public class Spline : MonoBehaviour
     private void Update()
     {
 
-        if (SplineCount > 1)
+        if (SplineCount > 1)//draws line from each point(press gizmo button if not visable) 
         {
             for (int i = 0; i < SplineCount-1; i++)
             {
@@ -75,7 +75,7 @@ public class Spline : MonoBehaviour
         }
     }
 
-    private int GetClosestPointonSpline(Vector3 pos)
+    private int GetClosestPointonSpline(Vector3 pos)//calulate distance from given point(pos) to each point on spine.return index num of closest point.
     {
         int ClosestPoint = -1;
 
@@ -102,6 +102,7 @@ public class Spline : MonoBehaviour
         Vector3 SectionDirection = (v2 - v1).normalized;//direction of section
 
         float DistanceFromV1 = Vector3.Dot(SectionDirection, v1toPos);
+
         if (DistanceFromV1 < 0.0f)
         {
             return v1;
@@ -120,7 +121,7 @@ public class Spline : MonoBehaviour
         }
     }
 
-     public Vector3 returnDir(int v1, int v2)
+     public Vector3 returnDir(int v1, int v2)//???
     {
         Vector3 direction = (SplinePoints[v1] - SplinePoints[v2]).normalized;
         return direction;
