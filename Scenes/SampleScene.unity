@@ -1642,11 +1642,8 @@ MonoBehaviour:
     m_Bits: 8
   target: {fileID: 0}
   pointerlocation: {fileID: 767049230}
-  MainCam: {fileID: 963194227}
-  Cam2: {fileID: 760011737}
+  playerCamera: {fileID: 963194227}
   jumpSpeed: 10
-  Cameras: []
-  CameraNum: 0
 --- !u!1 &1053293040
 GameObject:
   m_ObjectHideFlags: 0

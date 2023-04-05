@@ -17,15 +17,13 @@ public class RaycastExample : MonoBehaviour
     public GameObject target;
     public GameObject pointerlocation;
 
-    //Camera Variables
-    public Camera MainCam;
-    public Camera Cam2;
+    
 
     float rotationX=0;
     private float lookSpeed = 2.0f;
     private int lookLimit=180;
 
-    private Camera playerCamera;
+    public Camera playerCamera;
 
     private float rotationY=0;
 
@@ -36,9 +34,7 @@ public class RaycastExample : MonoBehaviour
     private float gravity=9.8f;
     public float jumpSpeed=10.0f;
 
-    public Camera[] Cameras;
-    public int CameraNum;
-    private int nextCamNum=0;
+  
 
     public float CurrentSpeed { get; private set; }
     public float Speed { get; private set; }
@@ -49,7 +45,7 @@ public class RaycastExample : MonoBehaviour
     void Start()
     {
         Speed = 10;
-        playerCamera = MainCam;
+ 
         characterController = GetComponent<CharacterController>();
        
     }
@@ -58,11 +54,9 @@ public class RaycastExample : MonoBehaviour
     void Update()
     {
         HighlightObject();
-        CheckforCamSwitch();
-        if(MainCam.enabled == true)
-        {
+       
             MouseRotation();
-        }
+      
         MovePlayer();
     }
 
@@ -121,67 +115,14 @@ public class RaycastExample : MonoBehaviour
         // transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
 
-    public void CameraSwitch()//old code
-    {
-        if (MainCam.enabled == true)
-        {
-            Cam2.enabled=true;
-            MainCam.enabled=false;
-            
-        }
-        else
-        {
-            if (MainCam.enabled == false)
-            {
-                Cam2.enabled = false;
-                MainCam.enabled = true;
-            }
-        }
-    }
-
-    void ChangeToCamera (Camera CamtoChangeTo)
-    {
-        CamtoChangeTo.enabled = true;// Make sure camera your changing to is enabled.
-        int skipnum = Array.IndexOf(Cameras, CamtoChangeTo);// get the number of the Camera in the array.
-        Array.
-
-        for (int i = 0; i < Cameras.Length; i++)//loop through all cameras and disable them,EXCEPT the one your changing to.
-        {
-            if (i != skipnum)
-            {
-                Cameras[i].enabled = false;
-            }
-        }
-    }
-
-    void CheckforCamSwitch()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            UnityEngine.Debug.Log("Q pressed");
-            // CameraSwitch();
-
-            //ensure array index does not go to more than the number of cameras available and pick next camera.
-            if ((nextCamNum + 1) < Cameras.Length)
-            {
-                nextCamNum = nextCamNum + 1;//set array index to next camera, add one to current index
-                ChangeToCamera(Cameras[nextCamNum]);
-            }
-            else {
-                nextCamNum = 0;
-                ChangeToCamera(Cameras[nextCamNum]);
-                
-            }
-        }
-    }
-
+   
 
 
 
     void HighlightObject()
     {
 
-        if (MainCam.enabled == true)
+        if (playerCamera.enabled == true)
         {
             //ray cast
             ray = Camera.main.ScreenPointToRay(Input.mousePosition); //create Ray from camera to mouse,x,y
