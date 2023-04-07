@@ -19,21 +19,11 @@ public class RaycastExample : MonoBehaviour
 
     
 
-    float rotationX=0;
-    private float lookSpeed = 2.0f;
-    private int lookLimit=180;
+    public Camera playerCameraforCasting;
 
-    public Camera playerCamera;
+  
 
-    private float rotationY=0;
-
-    //Movement Variables
-    private CharacterController characterController;
-    private Vector3 moveDirection;
-   
-    private float gravity=9.8f;
-    public float jumpSpeed=10.0f;
-
+    
   
 
     public float CurrentSpeed { get; private set; }
@@ -44,10 +34,7 @@ public class RaycastExample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Speed = 10;
- 
-        characterController = GetComponent<CharacterController>();
-       
+              
     }
 
     // Update is called once per frame
@@ -55,74 +42,14 @@ public class RaycastExample : MonoBehaviour
     {
         HighlightObject();
        
-            MouseRotation();
-      
-        MovePlayer();
+          
     }
-
-    private void MovePlayer()
-    {
-        // get current forward direction of player
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-
-        Vector3 right = transform.TransformDirection(Vector3.right);
-        float movementDirectionY = moveDirection.y;//store y value(to keep constant if not falling)
-
-
-        //Multiply speed by Vertical axis (W key in WASD)
-        CurrentSpeed = Speed * Input.GetAxis("Vertical");
-
-        // set current movement to forward at speed from input.
-        moveDirection = (forward * CurrentSpeed);
-            //+ (right * CurrentSpeed);
-       
-
-        //Jump
-        if (Input.GetButton("Jump")  && characterController.isGrounded)
-        {
-            moveDirection.y = jumpSpeed;
-        }
-        else
-        {
-            moveDirection.y = movementDirectionY;
-        }
-
-        // Gravity - Applied if player not on ground
-        if (!characterController.isGrounded)
-        {
-            moveDirection.y -= gravity * Time.deltaTime;
-        }
-
-        // This Actually moves the Player!
-        characterController.Move(moveDirection * Time.deltaTime);
-    }
-
-    private void MouseRotation()
-    {
-        
-        rotationX += Input.GetAxis("Mouse Y") * lookSpeed;
-        rotationX = Mathf.Clamp(rotationX, -lookLimit, lookLimit);
-
-        rotationY += Input.GetAxis("Mouse X") * lookSpeed;
-        rotationY = Mathf.Clamp(rotationY, -lookLimit, lookLimit);
-
-        //This actual Rotates the player Camera,using above inputs from mouse. 
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, -rotationY, 0);
-
-        
-
-        //ROTATE PLAYER DISABLED.
-        // transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-    }
-
-   
-
-
+ 
 
     void HighlightObject()
     {
 
-        if (playerCamera.enabled == true)
+        if (playerCameraforCasting.enabled == true)
         {
             //ray cast
             ray = Camera.main.ScreenPointToRay(Input.mousePosition); //create Ray from camera to mouse,x,y
