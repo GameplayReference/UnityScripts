@@ -8,6 +8,9 @@ public class CarController : MonoBehaviour
 {
     // Start is called before the first frame update
     private Rigidbody rb;
+    float forceAmount = 600.0f;//CHECK PHYSICS MATERIAL FRICTION.
+    private float rotspeed = 30.0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -19,15 +22,28 @@ public class CarController : MonoBehaviour
         
        
     }
+
     private void FixedUpdate()
     {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);//get forward direction of player
+
         if (Input.GetKey(KeyCode.A))
-            rb.AddForce(Vector3.left);
+        {
+            transform.rotation *= Quaternion.Euler(0, -rotspeed * Time.fixedDeltaTime, 0);
+            print("TIME.DEALTATIME :" + Time.fixedDeltaTime.ToString());
+        }
+
+       
         if (Input.GetKey(KeyCode.D))
-            rb.AddForce(Vector3.right);
+        {
+            transform.rotation *= Quaternion.Euler(0, +rotspeed * Time.fixedDeltaTime, 0);
+        }
+
+
         if (Input.GetKey(KeyCode.W))
-            rb.AddForce(Vector3.up);
+            rb.AddForce(forward*forceAmount * Time.fixedDeltaTime);
+
         if (Input.GetKey(KeyCode.S))
-            rb.AddForce(Vector3.down);
+            rb.AddForce(-forward * forceAmount * Time.fixedDeltaTime);
     }
 }

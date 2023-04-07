@@ -12,6 +12,7 @@ public class FirstPersonController : MonoBehaviour
 
     private float gravity = 9.8f;
     public float jumpSpeed = 10.0f;
+    public float RunSpeed = 20.0f;
 
     public float CurrentSpeed { get; private set; }
     public float Speed { get; private set; }
@@ -22,7 +23,7 @@ public class FirstPersonController : MonoBehaviour
     private float rotationY = 0;
     private float lookSpeed = 2.0f;
     private int lookLimit = 180;
-
+    const float BaseSpeed = 10.0f;
     public Camera playerCamera;
 
     
@@ -33,7 +34,7 @@ public class FirstPersonController : MonoBehaviour
         Speed = 10;
         characterController = GetComponent<CharacterController>();
 
-        //LockCursor(true);
+        LockCursor(true);
     }
 
     private void LockCursor(bool isCursorlocked)
@@ -52,10 +53,11 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         MovePlayer();
         MouseRotation();
     }
+
+
     private void MovePlayer()
     {
         // get current forward direction of player
@@ -64,8 +66,13 @@ public class FirstPersonController : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
         float movementDirectionY = moveDirection.y;//store y value(to keep constant if not falling)
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Speed = RunSpeed;
+        }
+        else { Speed = BaseSpeed; }// 10.0f 
 
-        //Multiply speed by Vertical axis (W key in WASD)
+        //Multiply speed by Vertical axis (W/s key in WASD)
         CurrentSpeed = Speed * Input.GetAxis("Vertical");
 
         // set current movement to forward at speed from input.
@@ -109,7 +116,7 @@ public class FirstPersonController : MonoBehaviour
 
 
 
-        //ROTATEa PLAYER AND Camera Around X
+        //Rotates PLAYER AND Camera Around X
          transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
 

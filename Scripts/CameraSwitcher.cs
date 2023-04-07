@@ -16,14 +16,39 @@ public class CameraSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ChangeToCamera(Cameras[0]);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        CheckforCameraButtonPress();
+
     }
+
+    private void CheckforCameraButtonPress()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeToCamera(Cameras[0]);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeToCamera(Cameras[1]);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChangeToCamera(Cameras[2]);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            ChangeToCamera(Cameras[3]);
+        }
+    }
+
     public void CameraSwitch()//old code
     {
         if (MainCam.enabled == true)
