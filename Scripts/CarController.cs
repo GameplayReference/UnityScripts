@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//  Very PRIMITIVE rigidbody controller, inputs add force body on axis
+//  Very PRIMITIVE rigidbody controller, rotated and add force forward/back.
 public class CarController : MonoBehaviour
 {
     // Start is called before the first frame update
     private Rigidbody rb;
-    float forceAmount = 600.0f;//CHECK PHYSICS MATERIAL FRICTION.
-    private float rotspeed = 30.0f;
+    public float forceAmount = 600.0f;//CHECK PHYSICS MATERIAL FRICTION.
+    public  float rotspeed = 30.0f;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class CarController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             transform.rotation *= Quaternion.Euler(0, -rotspeed * Time.fixedDeltaTime, 0);
-            print("TIME.DEALTATIME :" + Time.fixedDeltaTime.ToString());
+           
         }
 
        

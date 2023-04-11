@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-//Should be attached to Camera
+//Should be attached to Camera, will only respond to object on the selectable Layer(pick in editor, create new layer if none suitable.
 public class RaycastExample : MonoBehaviour
 {
     //Raycast variables
@@ -16,15 +16,12 @@ public class RaycastExample : MonoBehaviour
     //Raycast helper object references
     public GameObject target;
     public GameObject pointerlocation;
-
+    public GameObject TheGameManager;
     
 
     public Camera playerCameraforCasting;
 
-  
-
-    
-  
+    FeedbackManager theFeedbackManager;
 
     public float CurrentSpeed { get; private set; }
     public float Speed { get; private set; }
@@ -34,7 +31,8 @@ public class RaycastExample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-              
+        // reference the FeedbackManager to avoid using get component at runtime
+        theFeedbackManager = TheGameManager.GetComponent<FeedbackManager>();
     }
 
     // Update is called once per frame
@@ -60,12 +58,16 @@ public class RaycastExample : MonoBehaviour
                 //make hightlighted object the hit by raycast 
                 highlightedObject = hitData.transform.gameObject;
 
-                //debug draw whote line from pointer to hit pointon object.
+                //debug draw whole line from pointer to hit pointon object.
                 Debug.DrawLine(pointerlocation.transform.position, hitData.point, Color.white,4.0f, depthTest: false);
-               
-               
-               
+
+                //TheGameManager.GetComponent<FeedbackManager>().ChangeText( "Hit  "+ hitData.transform.gameObject.name); Avoiding getComponent.
+                theFeedbackManager.ChangeText("Hit  " + hitData.transform.gameObject.name);
+
+
+
                 ChangeColor(Color.red, highlightedObject);//change object color to red.
+
 
                 if (Input.GetMouseButtonDown(0))//if mouse button pressed
                 {
@@ -75,6 +77,11 @@ public class RaycastExample : MonoBehaviour
             }
             else
             {
+                //Hit nothing iteractabe, blank middletext;
+
+                theFeedbackManager.ChangeText("" );
+
+
                 if (highlightedObject!=null)//if ray misses set last highlighted obje back to white color.
                 {
                     ChangeColor(Color.white, highlightedObject);

@@ -14,29 +14,47 @@ public class MoveAlongSpline : MonoBehaviour
     //for lerp
     public int FrameCount = 1200;
     int elapsedFrames = 0;
+   
+    private int current=0;//the point in array 
+    private float acceptableCloseness=0.1f;
+    public GameObject SplineObject;
+
+    //for transform along nodes method(  moveObjonVector3Array)
+    public Vector3[] waypoints;
+    public int nodecount;
+
+    public float TurnSpeed = 0.01f;
+
 
     // Start is called before the first frame update
     void Start()
     {
         thisTransform = transform;
+         nodecount = SplineObject.transform.childCount;//array size equal to number of child object attached
+
+        for (int i = 0; i < nodecount; i++)//fill array with postion of all child objects
+        {
+    
+            waypoints[i] = SplineObject.transform.GetChild(i).position;
+        }
+      
     }
 
     // Update is called once per frame
     void Update()
     {
-        thisTransform.position = spline.NearestSplinePoint(FollowObj.position);
-
-
+        // for follow player code
+        // thisTransform.position = spline.NearestSplinePoint(FollowObj.position);
         //mov direction is direction from one point ot next
-
         // firstsecondDir = spline.SplineSection(this.thisTransform.position, spline.S).
-       // doLerp();//Disabled
-
+        // doLerp();//Disabled
+        moveObjonVector3Array();
     }
 
     void doLerp()
     {
-        if (spline.SplinePoints.Length > 1)
+
+                if (spline.SplinePoints.Length > 1)
         {
             Vector3 startVec = spline.SplinePoints[0];//HARDCODE
             Vector3 desVec = spline.SplinePoints[1];
@@ -59,5 +77,33 @@ public class MoveAlongSpline : MonoBehaviour
 
             }
         }
+    }
+
+    private void moveObjonVector3Array()//transforms and rotates object along the spline(loops)
+    {
+        if( Vector3.Distance(waypoints[current],transform.position ) < acceptableCloseness)
+          {
+            current++;// change to  next waypoint
+
+            //set current back to 0 to loop.
+            if (current >= waypoints.Length)
+            {
+                current = 0;
+            }
+           
+        }
+        transform.position = Vector3.MoveTowards(transform.position, waypoints[current], Time.deltaTime * 10.0f);
+
+       //change angle
+
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 TargetDirection = waypoints[current] - transform.position;
+        float singleStep = TurnSpeed * Time.deltaTime;
+
+        Vector3 newDirection = Vector3.RotateTowards(forward, TargetDirection, singleStep, 0.0f);
+        Debug.DrawRay(transform.position, newDirection, Color.yellow);
+
+        //apply rotation
+        transform.rotation = Quaternion.LookRotation(newDirection);
     }
 }
